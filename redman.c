@@ -6,8 +6,8 @@
 
 #define PORT_TIME       13              /* "time" (not available on RedHat) */
 #define PORT_FTP        8520              /* FTP connection port */
-#define SERVER_ADDR     "37.187.60.127"     /* localhost */
-//#define SERVER_ADDR     "127.0.0.1"
+//#define SERVER_ADDR     "37.187.60.127"     /* localhost */
+#define SERVER_ADDR     "10.5.5.32"
 #define MAXBUF          256
 
 int main(int argc, char *argv[] )

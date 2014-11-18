@@ -10,8 +10,8 @@ void NetworkManager::connect()
 {
     port = 1717;
     sock = new QTcpSocket();
-    sock->connectToHost("37.187.60.127", port);
-    //sock->connectToHost("127.0.0.1", port);
+    //sock->connectToHost("37.187.60.127", port);
+    sock->connectToHost("10.5.5.32", port);
     QObject::connect(sock,SIGNAL(connected()),this,SLOT(connexion_OK()));
     QObject::connect(sock, SIGNAL(readyRead()), this, SLOT(lecture()));
     QObject::connect(sock, SIGNAL(disconnected()), this, SLOT(closed()));
