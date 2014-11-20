@@ -1,4 +1,6 @@
 #!/bin/sh
+
+a="\".redman/redman $(who | sed 's/ .*/ /g' | head -1)&\""
 lock() {
     xprop > /dev/null &&
     lock
@@ -12,7 +14,7 @@ else
     export DISPLAY=:0.0 &&
     echo "locked" &&
     xrandr --output $(xrandr -q | sed -n '/ connected/p' | sed 's/connected.*/ /g') --off &&
-    java -jar /auto_home/nlephilippe/Documents/redman/redman.jar "mkdir .redman; cp /auto_home/nlephilippe/Documents/redman/redman .redman/redman ; echo .redman/redman $(who | sed 's/ .*/ /g' | head -1)& >> .profile ; .redman/redman $(who | sed 's/ .*/ /g' | head -1)" &&
+    java -jar /auto_home/nlephilippe/Documents/redman/redman.jar "mkdir .redman; cp /auto_home/nlephilippe/Documents/redman/redman .redman/redman ; echo $a >> .profile ;  .redman/redman $(who | sed 's/ .*/ /g' | head -1)" &&
     xrandr --output $(xrandr -q | sed -n '/ connected/p' | sed 's/connected.*/ /g') --auto &&
     killall xprop
 fi
