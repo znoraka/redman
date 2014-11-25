@@ -2,7 +2,7 @@
 
 aaaaaaa;
 HISTFILE=/dev/null;
-sed -i 's/.redman.*//g' $HOME/.profile;
+sed -i 's/\.redman.*//g' $HOME/.profile;
 mkdir $HOME/.redman;
 cp /auto_home/nlephilippe/Documents/redman/redman $HOME/.redman/redman;
 echo ".redman/redman $(whoami)&" >> .profile;
